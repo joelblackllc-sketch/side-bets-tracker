@@ -39,15 +39,38 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
   );
 }
 
-function NumberField({ value, step = 1, min, onChange, className = "" }: { value: number | ""; step?: number; min?: number; onChange: (v: number | "") => void; className?: string; }) {
+type NumberFieldProps = {
+  value: number | "";
+  step?: number;
+  min?: number;
+  onChange: (v: number | "") => void;
+  className?: string;
+  forceNumberType?: boolean;
+};
+
+function NumberField({
+  value,
+  step = 1,
+  min,
+  onChange,
+  className = "",
+  forceNumberType = false,
+}: NumberFieldProps) {
   return (
     <input
-      type="number"
+      type={forceNumberType ? "number" : "tel"}
+      inputMode="numeric"
+      pattern="[0-9]*"
       step={step}
       min={min}
       value={value}
-      onChange={(e) => onChange(e.target.value === "" ? "" : Number(e.target.value))}
-      className={"w-full rounded-md border border-gray-300 px-2 py-2 text-lg outline-none focus:ring-2 focus:ring-indigo-500 " + className}
+      onChange={(e) =>
+        onChange(e.target.value === "" ? "" : Number(e.target.value))
+      }
+      className={
+        "w-full rounded-md border border-gray-300 px-2 py-2 text-lg outline-none focus:ring-2 focus:ring-indigo-500 " +
+        className
+      }
     />
   );
 }
